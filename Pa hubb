@@ -1,27 +1,3 @@
-local Keys = {
-    ["PA-7XK9-MQ2L"] = true,
-    ["PA-4NB8-ZR5T"] = true,
-    ["PA-K3WP-9YXD"] = true,
-    ["PA-T8VQ-2MJL"] = true,
-    ["PA-R5CN-7KPA"] = true,
-    ["PA-Y2ZF-8WGH"] = true,
-    ["PA-M9LX-4QTR"] = true,
-    ["PA-H6KD-3VNP"] = true,
-    ["PA-J8RW-5XCM"] = true,
-    ["PA-Q4TG-7ZYL"] = true
-}
-
-Botao.MouseButton1Click:Connect(function()
-    if Keys[TextBox.Text] then
-        Liberado = true
-        ScreenGui:Destroy()
-    else
-        Titulo.Text = "Key Inválida!"
-    end
-end)
-
-repeat task.wait() until Liberado
-
 local Modal = loadstring(game:HttpGet("https://github.com/lxte/Modal/releases/latest/download/main.lua"))()
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
