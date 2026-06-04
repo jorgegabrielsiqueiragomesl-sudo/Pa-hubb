@@ -1,4 +1,15 @@
-local KeyCorreta = "Key 2"
+local Keys = {
+    ["PA-7XK9-MQ2L"] = true,
+    ["PA-4NB8-ZR5T"] = true,
+    ["PA-K3WP-9YXD"] = true,
+    ["PA-T8VQ-2MJL"] = true,
+    ["PA-R5CN-7KPA"] = true,
+    ["PA-Y2ZF-8WGH"] = true,
+    ["PA-M9LX-4QTR"] = true,
+    ["PA-H6KD-3VNP"] = true,
+    ["PA-J8RW-5XCM"] = true,
+    ["PA-Q4TG-7ZYL"] = true
+}
 
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
@@ -51,8 +62,8 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local Window = Modal:CreateWindow({
-    Title = "WG Hub",
-    SubTitle = "By: WG and Lulu",
+    Title = "Pa Hub",
+    SubTitle = "By: Lulu",
     Size = UDim2.new(0, 300, 0, 250),
     MinimumSize = Vector2.new(250, 200),
     Transparency = 0,
