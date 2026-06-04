@@ -1,0 +1,274 @@
+local KeyCorreta = "Key 2"
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Titulo = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local Botao = Instance.new("TextButton")
+
+ScreenGui.Parent = game:GetService("CoreGui")
+
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 300, 0, 180)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -90)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 85, 255)
+
+Titulo.Parent = Frame
+Titulo.Size = UDim2.new(1, 0, 0, 40)
+Titulo.BackgroundTransparency = 1
+Titulo.Text = "Digite sua Key"
+Titulo.TextColor3 = Color3.new(1,1,1)
+Titulo.TextScaled = true
+
+TextBox.Parent = Frame
+TextBox.Size = UDim2.new(0.8, 0, 0, 40)
+TextBox.Position = UDim2.new(0.1, 0, 0.4, 0)
+TextBox.PlaceholderText = "Digite a Key..."
+TextBox.Text = ""
+
+Botao.Parent = Frame
+Botao.Size = UDim2.new(0.5, 0, 0, 35)
+Botao.Position = UDim2.new(0.25, 0, 0.75, 0)
+Botao.Text = "Entrar"
+
+local Liberado = false
+
+Botao.MouseButton1Click:Connect(function()
+    if TextBox.Text == KeyCorreta then
+        Liberado = true
+        ScreenGui:Destroy()
+    else
+        Titulo.Text = "Key Inválida!"
+    end
+end)
+
+repeat task.wait() until Liberado
+
+local Modal = loadstring(game:HttpGet("https://github.com/lxte/Modal/releases/latest/download/main.lua"))()
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local Window = Modal:CreateWindow({
+    Title = "WG Hub",
+    SubTitle = "By: WG and Lulu",
+    Size = UDim2.new(0, 300, 0, 250),
+    MinimumSize = Vector2.new(250, 200),
+    Transparency = 0,
+    Icon = "rbxassetid://68073547",
+})
+local MainTab = Window:AddTab("Main")
+local currentRank = "Desconhecido"
+local rankOrder = {
+    ["bronze i"] = 1,
+    ["bronze ii"] = 2,
+    ["bronze iii"] = 3,
+    ["prata i"] = 4,
+    ["prata ii"] = 5,
+    ["prata iii"] = 6,
+    ["ouro i"] = 7,
+    ["ouro ii"] = 8,
+    ["ouro iii"] = 9,
+    ["diamante i"] = 10,
+    ["diamante ii"] = 11,
+    ["diamante iii"] = 12,
+    ["silver i"] = 4,
+    ["silver ii"] = 5,
+    ["silver iii"] = 6,
+    ["gold i"] = 7,
+    ["gold ii"] = 8,
+    ["gold iii"] = 9,
+    ["diamond i"] = 10,
+    ["diamond ii"] = 11,
+    ["diamond iii"] = 12,
+}
+local spinArgsMap = {
+    ["LUCKY SPIN"] = {
+        ["bronze i"] = 1,
+        ["bronze ii"] = 1,
+        ["bronze iii"] = 1,
+        ["prata i"] = 1,
+        ["prata ii"] = 1,
+        ["prata iii"] = 1,
+        ["ouro i"] = 7,
+        ["ouro ii"] = 7,
+        ["ouro iii"] = 7,
+        ["diamante i"] = 7,
+        ["diamante ii"] = 7,
+        ["diamante iii"] = 11,
+        ["silver i"] = 1,
+        ["silver ii"] = 1,
+        ["silver iii"] = 1,
+        ["gold i"] = 7,
+        ["gold ii"] = 7,
+        ["gold iii"] = 7,
+        ["diamond i"] = 7,
+        ["diamond ii"] = 7,
+        ["diamond iii"] = 11,
+    },
+    ["HAB SPIN"] = {
+        ["bronze i"] = 4,
+        ["bronze ii"] = 4,
+        ["bronze iii"] = 4,
+        ["prata i"] = 4,
+        ["prata ii"] = 4,
+        ["prata iii"] = 4,
+        ["ouro i"] = 4,
+        ["ouro ii"] = 4,
+        ["ouro iii"] = 8,
+        ["diamante i"] = 8,
+        ["diamante ii"] = 8,
+        ["diamante iii"] = 8,
+        ["silver i"] = 4,
+        ["silver ii"] = 4,
+        ["silver iii"] = 4,
+        ["gold i"] = 4,
+        ["gold ii"] = 4,
+        ["gold iii"] = 8,
+        ["diamond i"] = 8,
+        ["diamond ii"] = 8,
+        ["diamond iii"] = 8,
+    },
+    ["YEN"] = {
+        ["bronze i"] = 10,
+        ["bronze ii"] = 10,
+        ["bronze iii"] = 10,
+        ["prata i"] = 10,
+        ["prata ii"] = 10,
+        ["prata iii"] = 10,
+        ["ouro i"] = 10,
+        ["ouro ii"] = 10,
+        ["ouro iii"] = 10,
+        ["diamante i"] = 10,
+        ["diamante ii"] = 10,
+        ["diamante iii"] = 10,
+        ["silver i"] = 10,
+        ["silver ii"] = 10,
+        ["silver iii"] = 10,
+        ["gold i"] = 10,
+        ["gold ii"] = 10,
+        ["gold iii"] = 10,
+        ["diamond i"] = 10,
+        ["diamond ii"] = 10,
+        ["diamond iii"] = 10,
+    },
+}
+local function getRankValue(rankName)
+    local lowerRankName = string.lower(rankName)
+    local value = rankOrder[lowerRankName]
+    if value then
+        return value
+    else
+        return rankOrder["diamante iii"]
+    end
+end
+local function checarLabel(label)
+    if label:IsA("TextLabel") or label:IsA("TextBox") or label:IsA("TextButton") then
+        local textoOriginal = label.Text
+        local textoMinusculo = string.lower(textoOriginal)
+        if string.find(textoMinusculo, "highest rank") then
+            local partes = string.split(textoOriginal, ":")
+            if partes[2] then
+                local extractedRank = string.gsub(partes[2], "^%s*(.-)%s*$", "%1")
+                local normalizedRank = string.lower(extractedRank)
+                normalizedRank = string.gsub(normalizedRank, "/%s*%d+", "")
+                currentRank = string.gsub(normalizedRank, "^%s*(.-)%s*$", "%1")
+            end
+        end
+    end
+end
+for _, descendente in ipairs(PlayerGui:GetDescendants()) do
+    checarLabel(descendente)
+end
+PlayerGui.DescendantAdded:Connect(function(novoObjeto)
+    checarLabel(novoObjeto)
+end)
+local function getSpinArg(spinType)
+    local playerRankValue = getRankValue(currentRank)
+    local bestArg = nil
+    local bestRankValue = 0
+    if spinArgsMap[spinType] then
+        local ranksToCheck = {}
+        for rankName, _ in pairs(spinArgsMap[spinType]) do
+            table.insert(ranksToCheck, rankName)
+        end
+        table.sort(ranksToCheck, function(a, b) return getRankValue(a) > getRankValue(b) end)
+        for _, rankName in ipairs(ranksToCheck) do
+            local requiredRankValue = getRankValue(rankName)
+            if playerRankValue >= requiredRankValue then
+                bestArg = spinArgsMap[spinType][rankName]
+                break
+            end
+        end
+    end
+    return bestArg
+end
+local function checkRankAndNotify(spinType)
+    local rankValue = getRankValue(currentRank)
+    if spinType == "LUCKY SPIN" then
+        if rankValue < getRankValue("bronze ii") then
+            Window:Notify({
+                Title = "Requisito de Rank",
+                Description = "VOCÊ PRECISA ESTAR NO BRONZE II pelo menos para USAR ESSA FUNÇÃO",
+                Duration = 5,
+                Type = "Warning"
+            })
+            return false
+        end
+    elseif spinType == "HAB SPIN" then
+        if rankValue < getRankValue("prata ii") then
+            Window:Notify({
+                Title = "Requisito de Rank",
+                Description = "PARA USAR ESSA FUNÇÃO VOCÊ PRECISA ESTAR PELO MENOS NO RANK PRATA II",
+                Duration = 5,
+                Type = "Warning"
+            })
+            return false
+        end
+    end
+    return true
+end
+local function createSpinToggle(name, description, spinType)
+    local loopConnection = nil
+    MainTab:New("Toggle")({
+        Title = name,
+        Description = description,
+        DefaultValue = false,
+        Callback = function(Value)
+            if Value then
+                if checkRankAndNotify(spinType) then
+                    local argValue = getSpinArg(spinType)
+                    if argValue then
+                        loopConnection = task.spawn(function()
+                            while Value do
+                                local args = {[1] = argValue}
+                                ReplicatedStorage.Packages._Index:FindFirstChild("sleitnick_knit@1.7.0").knit.Services.SeasonService.RF.RequestRankedReward:InvokeServer(unpack(args))
+                                task.wait(4)
+                            end
+                        end)
+                    else
+                        Window:Notify({
+                            Title = "Erro",
+                            Description = "Função não disponível para o seu rank atual ou rank não reconhecido.",
+                            Duration = 5,
+                            Type = "Error"
+                        })
+                    end
+                else
+                    return false
+                end
+            else
+                if loopConnection then
+                    task.cancel(loopConnection)
+                    loopConnection = nil
+                end
+            end
+        end,
+    })
+end
+createSpinToggle("LUCKY SPIN", "Auto Farm Lucky Spin", "LUCKY SPIN")
+createSpinToggle("HAB SPIN", "Auto Farm Hab Spin", "HAB SPIN")
+createSpinToggle("YEN", "Auto Farm Yen Spin", "YEN")
+Window:SetTab("Main")
+Window:SetTheme("Midnight")
